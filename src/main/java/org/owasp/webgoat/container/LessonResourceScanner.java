@@ -1,4 +1,4 @@
-package org.owasp.webgoat.container.lessons;
+package org.owasp.webgoat.container;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class LessonScanner {
+public class LessonResourceScanner {
 
   private static final Pattern lessonPattern = Pattern.compile("^.*/lessons/([^/]*)/.*$");
 
   @Getter private final Set<String> lessons = new HashSet<>();
 
-  public LessonScanner(ResourcePatternResolver resourcePatternResolver) {
+  public LessonResourceScanner(ResourcePatternResolver resourcePatternResolver) {
     try {
       var resources = resourcePatternResolver.getResources("classpath:/lessons/*/*");
       for (var resource : resources) {

@@ -21,7 +21,10 @@
  * Source for this application is maintained at https://github.com/WebGoat/WebGoat, a repository for free software projects.
  */
 
-package org.owasp.webgoat.lessons.xss;
+package org.owasp.webgoat.lessons.xss.mitigation;
+
+import static org.owasp.webgoat.container.assignments.AttackResultBuilder.failed;
+import static org.owasp.webgoat.container.assignments.AttackResultBuilder.success;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
       "xss-mitigation-3-hint3",
       "xss-mitigation-3-hint4"
     })
-public class CrossSiteScriptingLesson3 extends AssignmentEndpoint {
+public class CrossSiteScriptingLesson3 implements AssignmentEndpoint {
 
   @PostMapping("/CrossSiteScripting/attack3")
   @ResponseBody

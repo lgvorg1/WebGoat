@@ -22,8 +22,12 @@
 
 package org.owasp.webgoat.lessons.passwordreset;
 
+import static org.owasp.webgoat.container.assignments.AttackResultBuilder.failed;
+import static org.owasp.webgoat.container.assignments.AttackResultBuilder.success;
+
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.UUID;
+import org.owasp.webgoat.container.CurrentUsername;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AttackResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,12 +47,12 @@ import org.springframework.web.client.RestTemplate;
  * @since 8/20/17.
  */
 @RestController
-public class ResetLinkAssignmentForgotPassword extends AssignmentEndpoint {
+public class ResetLinkAssignmentForgotPassword implements AssignmentEndpoint {
 
   private final RestTemplate restTemplate;
-  private String webWolfHost;
-  private String webWolfPort;
-  private String webWolfURL;
+  private final String webWolfHost;
+  private final String webWolfPort;
+  private final String webWolfURL;
   private final String webWolfMailURL;
 
   public ResetLinkAssignmentForgotPassword(
@@ -67,14 +71,14 @@ public class ResetLinkAssignmentForgotPassword extends AssignmentEndpoint {
   @PostMapping("/PasswordReset/ForgotPassword/create-password-reset-link")
   @ResponseBody
   public AttackResult sendPasswordResetLink(
-      @RequestParam String email, HttpServletRequest request) {
+      @RequestParam String email, HttpServletRequest request, @CurrentUsername String username) {
     String resetLink = UUID.randomUUID().toString();
     ResetLinkAssignment.resetLinks.add(resetLink);
     String host = request.getHeader(HttpHeaders.HOST);
     if (ResetLinkAssignment.TOM_EMAIL.equals(email)
         && (host.contains(webWolfPort)
             && host.contains(webWolfHost))) { // User indeed changed the host header.
-      ResetLinkAssignment.userToTomResetLink.put(getWebSession().getUserName(), resetLink);
+      ResetLinkAssignment.userToTomResetLink.put(username, resetLink);
       fakeClickingLinkEmail(webWolfURL, resetLink);
     } else {
       try {

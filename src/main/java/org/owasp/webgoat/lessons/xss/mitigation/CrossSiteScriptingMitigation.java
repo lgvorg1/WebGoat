@@ -15,25 +15,27 @@
  * not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  *
- * Getting Source ==============
+ * Getting Source
+ * ==============
  *
  * Source for this application is maintained at https://github.com/WebGoat/WebGoat, a repository for free software projects.
  */
 
-package org.owasp.webgoat.lessons.sqlinjection;
+package org.owasp.webgoat.lessons.xss.mitigation;
 
-import static org.mockito.Mockito.when;
+import org.owasp.webgoat.container.lessons.Category;
+import org.owasp.webgoat.container.lessons.Lesson;
+import org.springframework.stereotype.Component;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.owasp.webgoat.container.plugins.LessonTest;
-import org.owasp.webgoat.lessons.sqlinjection.introduction.SqlInjection;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+@Component
+public class CrossSiteScriptingMitigation extends Lesson {
+  @Override
+  public Category getDefaultCategory() {
+    return Category.A3;
+  }
 
-public class SqlLessonTest extends LessonTest {
-
-  @BeforeEach
-  public void setup() {
-    when(webSession.getCurrentLesson()).thenReturn(new SqlInjection());
-    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+  @Override
+  public String getTitle() {
+    return "6.xss-mitigation.title";
   }
 }
